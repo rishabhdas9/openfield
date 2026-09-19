@@ -10,6 +10,7 @@ from openfield.analyze import analyze_source
 from openfield.evidence import ingest_demo, open_database
 from openfield.models import Report, Upgrade
 from openfield.report import build_report, write_report
+from openfield.retrieval import MissingModelError, embed_database, prepare_model
 from openfield.rules import applicable_rules, load_pack
 
 
@@ -35,20 +36,41 @@ def build_parser() -> argparse.ArgumentParser:
     build.add_argument("--corpus", type=Path, required=True)
     build.add_argument("--environment", type=Path, required=True)
     build.add_argument("--report", type=Path, required=True)
+    embed = evidence_subparsers.add_parser("embed", help="Embed an existing evidence database.")
+    embed.add_argument("--database", type=Path, required=True)
+    embed.add_argument("--cache-dir", type=Path, required=True)
+    model = subparsers.add_parser("model", help="Manage optional local models.")
+    model_subparsers = model.add_subparsers(dest="model_command", required=True)
+    prepare = model_subparsers.add_parser("prepare", help="Download the configured model.")
+    prepare.add_argument("--cache-dir", type=Path, required=True)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "model":
+        try:
+            prepare_model(args.cache_dir)
+        except (MissingModelError, OSError, ValueError) as exc:
+            print(f"openfield: {exc}", file=sys.stderr)
+            return 2
+        return 0
     if args.command == "evidence":
         try:
-            report = Report.model_validate_json(args.report.read_text(encoding="utf-8"))
-            connection = open_database(args.database)
-            try:
-                ingest_demo(connection, args.corpus, args.environment, report)
-            finally:
-                connection.close()
-        except (OSError, ValueError, ValidationError) as exc:
+            if args.evidence_command == "build":
+                report = Report.model_validate_json(args.report.read_text(encoding="utf-8"))
+                connection = open_database(args.database)
+                try:
+                    ingest_demo(connection, args.corpus, args.environment, report)
+                finally:
+                    connection.close()
+            else:
+                connection = open_database(args.database)
+                try:
+                    embed_database(connection, args.cache_dir)
+                finally:
+                    connection.close()
+        except (MissingModelError, OSError, ValueError, ValidationError) as exc:
             print(f"openfield: {exc}", file=sys.stderr)
             return 2
         return 0
