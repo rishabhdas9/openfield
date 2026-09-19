@@ -1,16 +1,28 @@
 import argparse
+import os
+import sqlite3
 import sys
 import tokenize
+from functools import partial
 from pathlib import Path
 
 from packaging.version import InvalidVersion
 from pydantic import ValidationError
 
 from openfield.analyze import analyze_source
+from openfield.answering import answer_from_evidence, anthropic_generate
 from openfield.evidence import ingest_demo, open_database
 from openfield.models import Report, Upgrade
 from openfield.report import build_report, write_report
-from openfield.retrieval import MissingModelError, embed_database, prepare_model
+from openfield.retrieval import (
+    MODEL_ID,
+    MissingModelError,
+    RetrievalMode,
+    embed_database,
+    fastembed_vectors,
+    prepare_model,
+    retrieve,
+)
 from openfield.rules import applicable_rules, load_pack
 
 
@@ -43,6 +55,18 @@ def build_parser() -> argparse.ArgumentParser:
     model_subparsers = model.add_subparsers(dest="model_command", required=True)
     prepare = model_subparsers.add_parser("prepare", help="Download the configured model.")
     prepare.add_argument("--cache-dir", type=Path, required=True)
+    ask = subparsers.add_parser("ask", help="Answer a question from local evidence.")
+    ask.add_argument("--database", type=Path, required=True)
+    ask.add_argument(
+        "--retrieval",
+        choices=[mode.value for mode in RetrievalMode],
+        default=RetrievalMode.HYBRID_GRAPH.value,
+    )
+    ask.add_argument("--cache-dir", type=Path, default=Path(".cache/openfield"))
+    ask.add_argument("--generate", action="store_true")
+    ask.add_argument("--model")
+    ask.add_argument("--confirm-cloud", action="store_true")
+    ask.add_argument("question")
     return parser
 
 
@@ -71,6 +95,56 @@ def main(argv: list[str] | None = None) -> int:
                 finally:
                     connection.close()
         except (MissingModelError, OSError, ValueError, ValidationError) as exc:
+            print(f"openfield: {exc}", file=sys.stderr)
+            return 2
+        return 0
+    if args.command == "ask":
+        try:
+            if not args.database.is_file():
+                raise ValueError(f"database is not a file: {args.database}")
+            mode = RetrievalMode(args.retrieval)
+            connection = open_database(args.database)
+            try:
+                rows = connection.execute(
+                    "SELECT DISTINCT package, version FROM chunks WHERE package != 'environment'"
+                ).fetchall()
+                packages = {row["package"] for row in rows}
+                versions = {row["version"] for row in rows}
+                query_vector = None
+                if mode is not RetrievalMode.LEXICAL:
+                    try:
+                        query_vector = fastembed_vectors(
+                            [args.question], args.cache_dir, local_only=True
+                        )[0]
+                    except MissingModelError:
+                        if mode is RetrievalMode.VECTOR:
+                            raise
+                evidence = retrieve(
+                    connection,
+                    args.question,
+                    mode,
+                    packages,
+                    versions,
+                    query_vector=query_vector,
+                    model_id=MODEL_ID if query_vector is not None else None,
+                )
+            finally:
+                connection.close()
+
+            generate = None
+            if args.generate:
+                if not args.confirm_cloud:
+                    raise ValueError("--generate requires --confirm-cloud")
+                if not args.model:
+                    raise ValueError("--generate requires --model")
+                if not os.environ.get("ANTHROPIC_API_KEY"):
+                    raise ValueError("ANTHROPIC_API_KEY is not set")
+                for item in evidence:
+                    print(f"evidence {item.id} {item.source_url}", file=sys.stderr)
+                generate = partial(anthropic_generate, model=args.model)
+            answer = answer_from_evidence(args.question, evidence, mode.value, generate)
+            print(answer.model_dump_json(indent=2))
+        except (MissingModelError, OSError, ValueError, ValidationError, sqlite3.Error) as exc:
             print(f"openfield: {exc}", file=sys.stderr)
             return 2
         return 0

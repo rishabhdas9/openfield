@@ -94,3 +94,28 @@ class RetrievedEvidence(StrictModel):
     version: str
     score: float
     origins: tuple[str, ...]
+
+
+class Claim(StrictModel):
+    text: str
+    citation_ids: tuple[str, ...]
+
+
+class Answer(StrictModel):
+    question: str
+    claims: tuple[Claim, ...]
+    abstained: bool
+    limitations: tuple[str, ...]
+    retrieval_mode: str
+    model: str | None = None
+    input_tokens: int = 0
+    output_tokens: int = 0
+    elapsed_ms: float = Field(default=0.0, ge=0)
+    provider_retried: bool = False
+
+
+class Generation(StrictModel):
+    text: str
+    model: str
+    input_tokens: int = Field(ge=0)
+    output_tokens: int = Field(ge=0)
