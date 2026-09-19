@@ -1,0 +1,30 @@
+{
+  "schema_version": "1",
+  "package": "httpx",
+  "rules": [
+    {
+      "id": "httpx.client.proxies.removed",
+      "qualified_names": ["httpx.Client", "httpx.AsyncClient"],
+      "keyword": "proxies",
+      "removed_in": "0.28.0",
+      "impact": "breaking",
+      "summary": "HTTPX 0.28.0 removed the previously deprecated proxies argument.",
+      "suggestion": "Use proxy= for one proxy or mounts= for per-scheme transports.",
+      "source_url": "https://github.com/encode/httpx/releases/tag/0.28.0",
+      "source_heading": "0.28.0 (28th November, 2024)",
+      "reviewed": true
+    },
+    {
+      "id": "httpx.client.app.removed",
+      "qualified_names": ["httpx.Client", "httpx.AsyncClient"],
+      "keyword": "app",
+      "removed_in": "0.28.0",
+      "impact": "breaking",
+      "summary": "HTTPX 0.28.0 removed the previously deprecated app argument.",
+      "suggestion": "Use an explicit WSGITransport or ASGITransport.",
+      "source_url": "https://github.com/encode/httpx/releases/tag/0.28.0",
+      "source_heading": "0.28.0 (28th November, 2024)",
+      "reviewed": true
+    }
+  ]
+}

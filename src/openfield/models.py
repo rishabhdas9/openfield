@@ -1,0 +1,67 @@
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field
+
+
+class StrictModel(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+
+class Upgrade(StrictModel):
+    package: str
+    from_version: str
+    to_version: str
+    provenance: Literal["user_supplied", "environment_snapshot"] = "user_supplied"
+
+
+class Rule(StrictModel):
+    id: str
+    qualified_names: tuple[str, ...]
+    keyword: str
+    removed_in: str
+    impact: Literal["breaking"]
+    summary: str
+    suggestion: str
+    source_url: str
+    source_heading: str
+    reviewed: Literal[True]
+
+
+class RulePack(StrictModel):
+    schema_version: Literal["1"]
+    package: str
+    rules: tuple[Rule, ...]
+
+
+class SourceSpan(StrictModel):
+    path: str
+    line: int = Field(ge=1)
+    end_line: int = Field(ge=1)
+
+
+class Finding(StrictModel):
+    id: str
+    rule_id: str
+    span: SourceSpan
+    symbol: str
+    keyword: str
+    impact: Literal["breaking"]
+    evidence: Literal["reviewed-rule/direct-call-match"]
+    source_url: str
+    suggestion: str
+
+
+class Coverage(StrictModel):
+    complete: bool
+    parsed_files: int = Field(ge=0)
+    skipped_files: int = Field(ge=0)
+    limitations: tuple[str, ...]
+
+
+class Report(StrictModel):
+    schema_version: Literal["1"] = "1"
+    upgrade: Upgrade
+    findings: tuple[Finding, ...]
+    coverage: Coverage
+    network_used: bool = False
+    model_used: bool = False
