@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS vectors (
 
 ALIASES = {
     "package:httpx": ["httpx"],
-    "parameter:httpx.Client:proxies": ["proxies", "httpx.Client proxies"],
-    "parameter:httpx.Client:app": ["app", "httpx.Client app"],
+    "parameter:httpx.Client:proxies": ["proxies", "httpx.Client", "httpx.Client proxies"],
+    "parameter:httpx.Client:app": ["app", "httpx.Client", "httpx.Client app"],
     "package:starlette": ["starlette"],
     "symbol:starlette.TestClient": ["TestClient", "starlette TestClient"],
 }

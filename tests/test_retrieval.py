@@ -5,7 +5,14 @@ import pytest
 
 from openfield.evidence import ingest_demo, open_database
 from openfield.models import Report
-from openfield.retrieval import MissingModelError, store_vectors, vector_search
+from openfield.retrieval import (
+    MissingModelError,
+    RetrievalMode,
+    reciprocal_rank_fusion,
+    route_question,
+    store_vectors,
+    vector_search,
+)
 
 
 def seeded_database(tmp_path: Path):
@@ -67,3 +74,59 @@ def test_vector_search_rejects_model_identity_or_dimension_mismatch(tmp_path: Pa
             versions={"0.28.0"},
             limit=6,
         )
+
+
+def test_router_uses_graph_for_relationship_questions() -> None:
+    assert (
+        route_question("Why does Starlette 0.36.3 break with HTTPX 0.28.0?")
+        is RetrievalMode.HYBRID_GRAPH
+    )
+    assert route_question("What was removed in HTTPX 0.28.0?") is RetrievalMode.HYBRID
+
+
+def test_rrf_is_deterministic_and_deduplicates() -> None:
+    fused = reciprocal_rank_fusion(
+        [["a", "b"], ["b", "c"]],
+        rank_constant=60,
+    )
+    assert [chunk_id for chunk_id, _ in fused] == ["b", "a", "c"]
+
+
+def test_hybrid_graph_does_not_cross_package_version_filters(tmp_path: Path) -> None:
+    connection = seeded_database(tmp_path)
+    from openfield.retrieval import graph_expand
+
+    results = graph_expand(
+        connection,
+        seed_entities={"release:httpx:0.28.0"},
+        allowed_packages={"httpx"},
+        allowed_versions={"0.28.0"},
+        max_depth=3,
+        limit=6,
+    )
+    assert {result.package for result in results} <= {"httpx"}
+    assert {result.version for result in results} <= {"0.28.0"}
+
+
+def test_graph_expansion_terminates_on_cycles(tmp_path: Path) -> None:
+    connection = seeded_database(tmp_path)
+    connection.execute(
+        "INSERT OR IGNORE INTO edges VALUES (?, ?, ?, ?)",
+        (
+            "parameter:httpx.Client:app",
+            "related",
+            "release:starlette:0.36.3",
+            "starlette-0.36.3-testclient-httpx-app",
+        ),
+    )
+    from openfield.retrieval import graph_expand
+
+    results = graph_expand(
+        connection,
+        seed_entities={"release:starlette:0.36.3"},
+        allowed_packages={"httpx", "starlette"},
+        allowed_versions={"0.28.0", "0.36.3"},
+        max_depth=3,
+        limit=6,
+    )
+    assert len(results) <= 6
