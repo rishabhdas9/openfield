@@ -4,9 +4,11 @@ import tokenize
 from pathlib import Path
 
 from packaging.version import InvalidVersion
+from pydantic import ValidationError
 
 from openfield.analyze import analyze_source
-from openfield.models import Upgrade
+from openfield.evidence import ingest_demo, open_database
+from openfield.models import Report, Upgrade
 from openfield.report import build_report, write_report
 from openfield.rules import applicable_rules, load_pack
 
@@ -26,11 +28,30 @@ def build_parser() -> argparse.ArgumentParser:
     analyze.add_argument("--root", type=Path, required=True)
     analyze.add_argument("--output", type=Path, required=True)
     analyze.add_argument("--overwrite", action="store_true")
+    evidence = subparsers.add_parser("evidence", help="Build local evidence stores.")
+    evidence_subparsers = evidence.add_subparsers(dest="evidence_command", required=True)
+    build = evidence_subparsers.add_parser("build", help="Build the demo evidence database.")
+    build.add_argument("--database", type=Path, required=True)
+    build.add_argument("--corpus", type=Path, required=True)
+    build.add_argument("--environment", type=Path, required=True)
+    build.add_argument("--report", type=Path, required=True)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "evidence":
+        try:
+            report = Report.model_validate_json(args.report.read_text(encoding="utf-8"))
+            connection = open_database(args.database)
+            try:
+                ingest_demo(connection, args.corpus, args.environment, report)
+            finally:
+                connection.close()
+        except (OSError, ValueError, ValidationError) as exc:
+            print(f"openfield: {exc}", file=sys.stderr)
+            return 2
+        return 0
     if args.command != "analyze":
         return 0
 

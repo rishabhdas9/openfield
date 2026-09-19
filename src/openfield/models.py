@@ -65,3 +65,32 @@ class Report(StrictModel):
     coverage: Coverage
     network_used: bool = False
     model_used: bool = False
+
+
+class Relation(StrictModel):
+    source: str
+    relation: str
+    target: str
+
+
+class EvidenceChunk(StrictModel):
+    id: str
+    package: str
+    version: str
+    heading: str
+    text: str
+    source_url: str
+    source_digest: str
+    entity_ids: tuple[str, ...]
+    relations: tuple[Relation, ...]
+
+
+class RetrievedEvidence(StrictModel):
+    id: str
+    text: str
+    source_url: str
+    heading: str
+    package: str
+    version: str
+    score: float
+    origins: tuple[str, ...]
