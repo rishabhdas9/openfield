@@ -1,0 +1,11 @@
+# Local analysis artifacts are regenerable and are not product source.
+/graft/
+/graphify-out/
+/.remember/
+.cache/
+.venv/
+dist/
+*.db
+__pycache__/
+.pytest_cache/
+.ruff_cache/

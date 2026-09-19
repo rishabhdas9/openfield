@@ -1,0 +1,38 @@
+{
+  "schema_version": "1",
+  "upgrade": {
+    "package": "httpx",
+    "from_version": "0.27.2",
+    "to_version": "0.28.0",
+    "provenance": "user_supplied"
+  },
+  "findings": [
+    {
+      "id": "httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3",
+      "rule_id": "httpx.client.proxies.removed",
+      "span": {
+        "path": "examples/httpx_028/direct_client.py",
+        "line": 3,
+        "end_line": 5
+      },
+      "symbol": "httpx.Client",
+      "keyword": "proxies",
+      "impact": "breaking",
+      "evidence": "reviewed-rule/direct-call-match",
+      "source_url": "https://github.com/encode/httpx/releases/tag/0.28.0",
+      "suggestion": "Use proxy= for one proxy or mounts= for per-scheme transports."
+    }
+  ],
+  "coverage": {
+    "complete": false,
+    "parsed_files": 1,
+    "skipped_files": 0,
+    "limitations": [
+      "This slice recognizes direct qualified calls only.",
+      "Dynamic imports, star imports, getattr, **kwargs, wrappers, and inferred instances are unresolved.",
+      "A clean report is not proof that the upgrade is safe."
+    ]
+  },
+  "network_used": false,
+  "model_used": false
+}
