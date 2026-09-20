@@ -11,6 +11,7 @@ from pydantic import ValidationError
 
 from openfield.analyze import analyze_source
 from openfield.answering import answer_from_evidence, anthropic_generate
+from openfield.eval import load_cases, run_benchmark, write_results
 from openfield.evidence import ingest_demo, open_database
 from openfield.models import Report, Upgrade
 from openfield.report import build_report, write_report
@@ -67,6 +68,21 @@ def build_parser() -> argparse.ArgumentParser:
     ask.add_argument("--model")
     ask.add_argument("--confirm-cloud", action="store_true")
     ask.add_argument("question")
+    evaluate = subparsers.add_parser("eval", help="Run the controlled retrieval benchmark.")
+    evaluate.add_argument("--database", type=Path, required=True)
+    evaluate.add_argument("--questions", type=Path, required=True)
+    evaluate.add_argument(
+        "--modes",
+        nargs="+",
+        choices=[RetrievalMode.VECTOR.value, RetrievalMode.HYBRID_GRAPH.value],
+        required=True,
+    )
+    evaluate.add_argument("--top-k", type=int, default=6)
+    evaluate.add_argument(
+        "--cache-dir", type=Path, default=Path(".cache/openfield-models")
+    )
+    evaluate.add_argument("--output", type=Path, required=True)
+    evaluate.add_argument("--report", type=Path, required=True)
     return parser
 
 
@@ -144,6 +160,20 @@ def main(argv: list[str] | None = None) -> int:
                 generate = partial(anthropic_generate, model=args.model)
             answer = answer_from_evidence(args.question, evidence, mode.value, generate)
             print(answer.model_dump_json(indent=2))
+        except (MissingModelError, OSError, ValueError, ValidationError, sqlite3.Error) as exc:
+            print(f"openfield: {exc}", file=sys.stderr)
+            return 2
+        return 0
+    if args.command == "eval":
+        try:
+            result = run_benchmark(
+                args.database,
+                load_cases(args.questions),
+                [RetrievalMode(mode) for mode in args.modes],
+                args.top_k,
+                args.cache_dir,
+            )
+            write_results(result, args.output, args.report)
         except (MissingModelError, OSError, ValueError, ValidationError, sqlite3.Error) as exc:
             print(f"openfield: {exc}", file=sys.stderr)
             return 2

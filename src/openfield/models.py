@@ -119,3 +119,22 @@ class Generation(StrictModel):
     model: str
     input_tokens: int = Field(ge=0)
     output_tokens: int = Field(ge=0)
+
+
+class EvaluationCase(StrictModel):
+    id: str
+    question: str
+    hop_count: Literal[0, 1, 2, 3]
+    packages: tuple[str, ...]
+    versions: tuple[str, ...]
+    required_evidence_ids: tuple[str, ...]
+    answerable: bool
+
+
+class EvaluationResult(StrictModel):
+    case_id: str
+    mode: str
+    retrieved_ids: tuple[str, ...]
+    citation_ids: tuple[str, ...]
+    abstained: bool
+    latency_ms: float

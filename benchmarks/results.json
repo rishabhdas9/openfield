@@ -1,0 +1,635 @@
+{
+  "raw_results": [
+    {
+      "case_id": "single-removed-proxies",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-socks5h",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-verify-string-deprecated"
+      ],
+      "citation_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-socks5h"
+      ],
+      "abstained": false,
+      "latency_ms": 0.8495
+    },
+    {
+      "case_id": "single-proxies-deprecated",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.26.0-proxies-deprecated"
+      ],
+      "citation_ids": [
+        "httpx-0.26.0-proxies-deprecated"
+      ],
+      "abstained": false,
+      "latency_ms": 0.327834
+    },
+    {
+      "case_id": "single-app-deprecated",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.27.0-app-deprecated"
+      ],
+      "citation_ids": [
+        "httpx-0.27.0-app-deprecated"
+      ],
+      "abstained": false,
+      "latency_ms": 0.285625
+    },
+    {
+      "case_id": "single-starlette-fix",
+      "mode": "vector",
+      "retrieved_ids": [
+        "starlette-0.37.2-testclient-transport"
+      ],
+      "citation_ids": [
+        "starlette-0.37.2-testclient-transport"
+      ],
+      "abstained": false,
+      "latency_ms": 0.288834
+    },
+    {
+      "case_id": "two-direct-usage",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-verify-string-deprecated",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-empty-params"
+      ],
+      "citation_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-compact-json"
+      ],
+      "abstained": false,
+      "latency_ms": 0.486791
+    },
+    {
+      "case_id": "two-proxy-migration",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.26.0-proxies-deprecated",
+        "httpx-0.28.0-socks5h",
+        "httpx-0.28.0-url-escape-review",
+        "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3",
+        "httpx-0.28.0-lazy-imports"
+      ],
+      "citation_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.26.0-proxies-deprecated",
+        "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3"
+      ],
+      "abstained": false,
+      "latency_ms": 0.44175
+    },
+    {
+      "case_id": "two-starlette-app",
+      "mode": "vector",
+      "retrieved_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-empty-params",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-lazy-imports"
+      ],
+      "citation_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-client-arguments-removed"
+      ],
+      "abstained": false,
+      "latency_ms": 0.77275
+    },
+    {
+      "case_id": "two-compatible-starlette",
+      "mode": "vector",
+      "retrieved_ids": [
+        "starlette-0.37.2-testclient-transport",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-empty-params",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-verify-string-deprecated"
+      ],
+      "citation_ids": [
+        "starlette-0.37.2-testclient-transport",
+        "httpx-0.28.0-client-arguments-removed"
+      ],
+      "abstained": false,
+      "latency_ms": 0.673
+    },
+    {
+      "case_id": "three-transitive-break",
+      "mode": "vector",
+      "retrieved_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-verify-string-deprecated",
+        "httpx-0.28.0-socks5h"
+      ],
+      "citation_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-client-arguments-removed"
+      ],
+      "abstained": false,
+      "latency_ms": 0.605708
+    },
+    {
+      "case_id": "three-remediation-options",
+      "mode": "vector",
+      "retrieved_ids": [
+        "starlette-0.37.2-testclient-transport",
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-verify-string-deprecated"
+      ],
+      "citation_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-verify-string-deprecated"
+      ],
+      "abstained": false,
+      "latency_ms": 1.096833
+    },
+    {
+      "case_id": "three-direct-and-transitive",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-verify-string-deprecated",
+        "httpx-0.28.0-socks5h"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.549833
+    },
+    {
+      "case_id": "three-provenance",
+      "mode": "vector",
+      "retrieved_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-socks5h",
+        "starlette-0.37.2-testclient-transport",
+        "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3",
+        "httpx-0.26.0-proxies-deprecated",
+        "httpx-0.28.0-client-arguments-removed"
+      ],
+      "citation_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "starlette-0.37.2-testclient-transport",
+        "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3"
+      ],
+      "abstained": false,
+      "latency_ms": 0.879459
+    },
+    {
+      "case_id": "abstain-safe",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-verify-string-deprecated",
+        "httpx-0.28.0-socks5h",
+        "httpx-0.28.0-cert-deprecated"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.32225
+    },
+    {
+      "case_id": "abstain-installed-version",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-socks5h",
+        "httpx-0.28.0-verify-string-deprecated",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-cert-deprecated"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.419208
+    },
+    {
+      "case_id": "abstain-timeout",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-empty-params"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.38275
+    },
+    {
+      "case_id": "abstain-production-incidents",
+      "mode": "vector",
+      "retrieved_ids": [
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-empty-params",
+        "httpx-0.28.0-cert-deprecated"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.204959
+    },
+    {
+      "case_id": "single-removed-proxies",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-socks5h",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-empty-params"
+      ],
+      "citation_ids": [
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-socks5h"
+      ],
+      "abstained": false,
+      "latency_ms": 1.928
+    },
+    {
+      "case_id": "single-proxies-deprecated",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.26.0-proxies-deprecated"
+      ],
+      "citation_ids": [
+        "httpx-0.26.0-proxies-deprecated"
+      ],
+      "abstained": false,
+      "latency_ms": 0.472
+    },
+    {
+      "case_id": "single-app-deprecated",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.27.0-app-deprecated"
+      ],
+      "citation_ids": [
+        "httpx-0.27.0-app-deprecated"
+      ],
+      "abstained": false,
+      "latency_ms": 0.43925
+    },
+    {
+      "case_id": "single-starlette-fix",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "starlette-0.37.2-testclient-transport"
+      ],
+      "citation_ids": [
+        "starlette-0.37.2-testclient-transport"
+      ],
+      "abstained": false,
+      "latency_ms": 0.449292
+    },
+    {
+      "case_id": "two-direct-usage",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-empty-params",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-verify-string-deprecated"
+      ],
+      "citation_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-compact-json"
+      ],
+      "abstained": false,
+      "latency_ms": 0.864834
+    },
+    {
+      "case_id": "two-proxy-migration",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3",
+        "httpx-0.26.0-proxies-deprecated",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-cert-deprecated"
+      ],
+      "citation_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3",
+        "httpx-0.26.0-proxies-deprecated"
+      ],
+      "abstained": false,
+      "latency_ms": 0.599917
+    },
+    {
+      "case_id": "two-starlette-app",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-empty-params",
+        "httpx-0.28.0-lazy-imports"
+      ],
+      "citation_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-client-arguments-removed"
+      ],
+      "abstained": false,
+      "latency_ms": 1.159958
+    },
+    {
+      "case_id": "two-compatible-starlette",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "starlette-0.37.2-testclient-transport",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-empty-params",
+        "httpx-0.28.0-compact-json"
+      ],
+      "citation_ids": [
+        "starlette-0.37.2-testclient-transport",
+        "httpx-0.28.0-client-arguments-removed"
+      ],
+      "abstained": false,
+      "latency_ms": 0.873583
+    },
+    {
+      "case_id": "three-transitive-break",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-url-escape-review",
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-verify-string-deprecated"
+      ],
+      "citation_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "starlette-0.36.3-testclient-httpx-app"
+      ],
+      "abstained": false,
+      "latency_ms": 0.805833
+    },
+    {
+      "case_id": "three-remediation-options",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-client-arguments-removed",
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-verify-string-deprecated",
+        "httpx-0.28.0-empty-params",
+        "httpx-0.28.0-socks5h"
+      ],
+      "citation_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-verify-string-deprecated",
+        "httpx-0.28.0-empty-params"
+      ],
+      "abstained": false,
+      "latency_ms": 1.682584
+    },
+    {
+      "case_id": "three-direct-and-transitive",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-verify-string-deprecated"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.696208
+    },
+    {
+      "case_id": "three-provenance",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3",
+        "starlette-0.37.2-testclient-transport",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.26.0-proxies-deprecated",
+        "httpx-0.28.0-cert-deprecated"
+      ],
+      "citation_ids": [
+        "starlette-0.36.3-testclient-httpx-app",
+        "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3",
+        "starlette-0.37.2-testclient-transport"
+      ],
+      "abstained": false,
+      "latency_ms": 1.060875
+    },
+    {
+      "case_id": "abstain-safe",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-verify-string-deprecated",
+        "httpx-0.28.0-socks5h"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.481042
+    },
+    {
+      "case_id": "abstain-installed-version",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-socks5h",
+        "httpx-0.28.0-empty-params",
+        "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-cert-deprecated"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.614375
+    },
+    {
+      "case_id": "abstain-timeout",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.28.0-cert-deprecated",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-empty-params"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.715083
+    },
+    {
+      "case_id": "abstain-production-incidents",
+      "mode": "hybrid-graph",
+      "retrieved_ids": [
+        "httpx-0.28.0-url-escape-review",
+        "httpx-0.28.0-client-arguments-removed",
+        "httpx-0.28.0-compact-json",
+        "httpx-0.28.0-lazy-imports",
+        "httpx-0.28.0-empty-params",
+        "httpx-0.28.0-cert-deprecated"
+      ],
+      "citation_ids": [],
+      "abstained": true,
+      "latency_ms": 0.354959
+    }
+  ],
+  "summaries_by_mode": {
+    "vector": {
+      "evidence_recall_by_hop": {
+        "1": {
+          "found": 4,
+          "required": 4,
+          "rate": 1.0
+        },
+        "2": {
+          "found": 7,
+          "required": 8,
+          "rate": 0.875
+        },
+        "3": {
+          "found": 10,
+          "required": 12,
+          "rate": 0.8333333333333334
+        }
+      },
+      "abstention": {
+        "correct": 4,
+        "total": 4,
+        "rate": 1.0
+      },
+      "unnecessary_abstention": {
+        "count": 1,
+        "total": 12,
+        "rate": 0.08333333333333333
+      },
+      "citation_validity": {
+        "valid": 16,
+        "total": 16,
+        "rate": 1.0
+      },
+      "latency_ms": {
+        "median": 0.4642705,
+        "p95": 1.096833
+      }
+    },
+    "hybrid-graph": {
+      "evidence_recall_by_hop": {
+        "1": {
+          "found": 4,
+          "required": 4,
+          "rate": 1.0
+        },
+        "2": {
+          "found": 7,
+          "required": 8,
+          "rate": 0.875
+        },
+        "3": {
+          "found": 10,
+          "required": 12,
+          "rate": 0.8333333333333334
+        }
+      },
+      "abstention": {
+        "correct": 4,
+        "total": 4,
+        "rate": 1.0
+      },
+      "unnecessary_abstention": {
+        "count": 1,
+        "total": 12,
+        "rate": 0.08333333333333333
+      },
+      "citation_validity": {
+        "valid": 16,
+        "total": 16,
+        "rate": 1.0
+      },
+      "latency_ms": {
+        "median": 0.7056455,
+        "p95": 1.928
+      }
+    }
+  },
+  "metadata": {
+    "git_commit": "e70617ecf1444a7ce57c9888dacd72449abe36de",
+    "python": "3.13.15",
+    "openfield": "0.1.0",
+    "dependencies": {
+      "fastembed": "0.8.0",
+      "numpy": "2.5.3",
+      "packaging": "26.3",
+      "pydantic": "2.13.5"
+    },
+    "model": "BAAI/bge-small-en-v1.5",
+    "corpus": {
+      "chunk_count": 14,
+      "digest": "12e2994349a3d3d598739589e60e63fc0962048652f472b9f44a3d97434f3f73"
+    },
+    "platform": {
+      "system": "Darwin",
+      "release": "27.0.0",
+      "machine": "arm64",
+      "processor": "arm"
+    },
+    "top_k": 6,
+    "retrieval_modes": [
+      "vector",
+      "hybrid-graph"
+    ],
+    "question_count": 16,
+    "hop_count_denominators": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4
+    },
+    "model_preparation_ms": 433.716083,
+    "model_api_cost_usd": 0
+  }
+}
