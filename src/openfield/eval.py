@@ -227,7 +227,10 @@ def write_results(result: dict[str, Any], output: Path, report: Path) -> None:
             [
                 "# Openfield retrieval benchmark",
                 "",
-                "> Development benchmark on a frozen 16-question set; not a held-out public claim.",
+                (
+                    "> Development benchmark on a frozen "
+                    f"{metadata['question_count']}-question set; not a held-out public claim."
+                ),
                 "",
                 "| Mode | Recall hop 1 | Recall hop 2 | Recall hop 3 | Abstention | Citations | Median ms | P95 ms |",
                 "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",

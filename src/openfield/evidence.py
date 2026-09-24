@@ -59,9 +59,13 @@ ALIASES = {
 
 def open_database(path: Path) -> sqlite3.Connection:
     connection = sqlite3.connect(path)
-    connection.row_factory = sqlite3.Row
-    connection.execute("PRAGMA foreign_keys = ON")
-    connection.executescript(SCHEMA)
+    try:
+        connection.row_factory = sqlite3.Row
+        connection.execute("PRAGMA foreign_keys = ON")
+        connection.executescript(SCHEMA)
+    except Exception:
+        connection.close()
+        raise
     return connection
 
 

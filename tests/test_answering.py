@@ -90,6 +90,81 @@ def test_provider_exception_keeps_deterministic_answer() -> None:
     assert "provider unavailable" in answer.limitations
 
 
+def test_unexpected_provider_exception_keeps_deterministic_answer() -> None:
+    def fail(_payload: str) -> Generation:
+        raise RuntimeError("provider SDK failed")
+
+    answer = answer_from_evidence("What changed?", EVIDENCE, "hybrid", generate=fail)
+    assert answer.model is None
+    assert "provider unavailable" in answer.limitations
+
+
+def test_model_cannot_override_required_abstention() -> None:
+    called = False
+
+    def fake_generate(_payload: str) -> Generation:
+        nonlocal called
+        called = True
+        return Generation(
+            text=json.dumps(
+                {
+                    "question": "Is the whole upgrade safe?",
+                    "claims": [
+                        {
+                            "text": "The upgrade is safe.",
+                            "citation_ids": ["httpx-0.28.0-client-arguments-removed"],
+                        }
+                    ],
+                    "abstained": False,
+                    "limitations": [],
+                    "retrieval_mode": "lexical",
+                }
+            ),
+            model="fake",
+            input_tokens=20,
+            output_tokens=10,
+        )
+
+    answer = answer_from_evidence(
+        "Is the whole upgrade safe?", EVIDENCE, "lexical", generate=fake_generate
+    )
+    assert answer.abstained is True
+    assert called is False
+
+
+def test_model_cannot_override_retrieval_metadata() -> None:
+    def fake_generate(_payload: str) -> Generation:
+        return Generation(
+            text=json.dumps(
+                {
+                    "question": "What changed?",
+                    "claims": [
+                        {
+                            "text": EVIDENCE[0].text,
+                            "citation_ids": ["httpx-0.28.0-client-arguments-removed"],
+                        }
+                    ],
+                    "abstained": False,
+                    "limitations": [],
+                    "retrieval_mode": "spoofed",
+                }
+            ),
+            model="fake",
+            input_tokens=20,
+            output_tokens=10,
+        )
+
+    answer = answer_from_evidence("What changed?", EVIDENCE, "hybrid-graph", generate=fake_generate)
+    assert answer.retrieval_mode == "hybrid-graph"
+
+
+def test_question_without_content_tokens_abstains() -> None:
+    answer = answer_from_evidence(
+        "What is HTTPX 0.28.0?", EVIDENCE, retrieval_mode="lexical", generate=None
+    )
+    assert answer.abstained is True
+
+
 def test_deterministic_answer_ignores_incidental_question_words() -> None:
     evidence = [
         RetrievedEvidence(

@@ -60,7 +60,11 @@ def _deterministic_answer(
         and token not in package_names
         and not token.replace(".", "").isdigit()
     }
-    generic_change_question = question_tokens <= {"change", "changed", "changes"}
+    generic_change_question = bool(question_tokens) and question_tokens <= {
+        "change",
+        "changed",
+        "changes",
+    }
     supported = [
         item
         for item in evidence
@@ -120,7 +124,7 @@ def answer_from_evidence(
 ) -> Answer:
     started = time.perf_counter()
     fallback = _deterministic_answer(question, evidence, retrieval_mode)
-    if generate is None:
+    if generate is None or fallback.abstained:
         return fallback.model_copy(update={"elapsed_ms": (time.perf_counter() - started) * 1000})
 
     allowed_ids = {item.id for item in evidence}
@@ -136,14 +140,16 @@ def answer_from_evidence(
                     "model": generation.model,
                     "input_tokens": generation.input_tokens,
                     "output_tokens": generation.output_tokens,
+                    "retrieval_mode": retrieval_mode,
+                    "limitations": tuple(dict.fromkeys((*candidate.limitations, LIMITATION))),
                     "elapsed_ms": (time.perf_counter() - started) * 1000,
                     "provider_retried": attempt > 0,
                 }
             )
-        except (OSError, TimeoutError):
-            failure = "provider unavailable"
         except (ValidationError, ValueError, json.JSONDecodeError):
             failure = "model response rejected"
+        except (OSError, RuntimeError, TimeoutError):
+            failure = "provider unavailable"
     return fallback.model_copy(
         update={
             "limitations": (*fallback.limitations, failure),
@@ -155,16 +161,19 @@ def answer_from_evidence(
 
 def anthropic_generate(payload: str, model: str, max_tokens: int = 800) -> Generation:
     try:
-        from anthropic import Anthropic
+        from anthropic import Anthropic, AnthropicError
     except ImportError as exc:
         raise RuntimeError("install with: uv sync --extra ai") from exc
-    client = Anthropic()
-    response = client.messages.create(
-        model=model,
-        max_tokens=max_tokens,
-        temperature=0,
-        messages=[{"role": "user", "content": payload}],
-    )
+    try:
+        client = Anthropic()
+        response = client.messages.create(
+            model=model,
+            max_tokens=max_tokens,
+            temperature=0,
+            messages=[{"role": "user", "content": payload}],
+        )
+    except AnthropicError as exc:
+        raise OSError("Anthropic request failed") from exc
     text_blocks = [
         block.text for block in response.content if getattr(block, "type", None) == "text"
     ]

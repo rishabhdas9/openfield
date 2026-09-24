@@ -1,4 +1,5 @@
 import os
+import sqlite3
 from functools import partial
 from pathlib import Path
 
@@ -29,6 +30,8 @@ class AskRequest(BaseModel):
 
 
 def run_question(database: Path, request: AskRequest) -> Answer:
+    if not database.is_file():
+        raise ValueError(f"database is not a file: {database}")
     connection = open_database(database)
     try:
         query_vector = None
@@ -81,7 +84,7 @@ def create_app(database: Path, allow_cloud: bool = False) -> FastAPI:
             raise HTTPException(status_code=403, detail="cloud generation is disabled")
         try:
             return run_question(database, request).model_dump(mode="json")
-        except (MissingModelError, OSError, ValueError) as exc:
+        except (MissingModelError, OSError, ValueError, sqlite3.Error) as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     return app

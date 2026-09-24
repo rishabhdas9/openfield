@@ -1,4 +1,6 @@
-from openfield.eval import aggregate
+from pathlib import Path
+
+from openfield.eval import aggregate, write_results
 from openfield.models import EvaluationCase, EvaluationResult
 
 
@@ -78,3 +80,32 @@ def test_citation_validity_counts_only_selected_evidence() -> None:
         "total": 1,
         "rate": 0.0,
     }
+
+
+def test_report_uses_the_recorded_question_count(tmp_path: Path) -> None:
+    summary = {
+        "evidence_recall_by_hop": {},
+        "abstention": {"correct": 0, "total": 0, "rate": 0.0},
+        "unnecessary_abstention": {"count": 0, "total": 2, "rate": 0.0},
+        "citation_validity": {"valid": 2, "total": 2, "rate": 1.0},
+        "latency_ms": {"median": 1.0, "p95": 2.0},
+    }
+    result = {
+        "raw_results": [],
+        "summaries_by_mode": {"vector": summary},
+        "metadata": {
+            "question_count": 2,
+            "top_k": 6,
+            "model_api_cost_usd": 0,
+            "model_preparation_ms": 3.0,
+            "corpus": {"chunk_count": 1, "digest": "digest"},
+            "git_commit": "commit",
+            "python": "3.13",
+            "openfield": "0.1.0",
+        },
+    }
+    report = tmp_path / "report.md"
+
+    write_results(result, tmp_path / "results.json", report)
+
+    assert "2-question set" in report.read_text()

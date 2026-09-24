@@ -56,3 +56,35 @@ def test_api_refuses_cloud_generation_without_explicit_server_enablement(
         },
     )
     assert response.status_code == 403
+
+
+def test_api_refuses_a_missing_database(tmp_path: Path) -> None:
+    database = tmp_path / "missing.db"
+    client = TestClient(create_app(database))
+    response = client.post(
+        "/ask",
+        json={
+            "question": "What changed?",
+            "retrieval": "lexical",
+            "packages": ["httpx"],
+            "versions": ["0.28.0"],
+        },
+    )
+    assert response.status_code == 400
+    assert not database.exists()
+
+
+def test_api_refuses_an_invalid_database(tmp_path: Path) -> None:
+    database = tmp_path / "invalid.db"
+    database.write_text("not sqlite")
+    client = TestClient(create_app(database))
+    response = client.post(
+        "/ask",
+        json={
+            "question": "What changed?",
+            "retrieval": "lexical",
+            "packages": ["httpx"],
+            "versions": ["0.28.0"],
+        },
+    )
+    assert response.status_code == 400
