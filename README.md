@@ -8,8 +8,8 @@ Benchmark snapshot: 2026-09-24 on Darwin 27.0.0 (arm64/arm), using `BAAI/bge-sma
 
 | Mode | Recall hop 1 | Recall hop 2 | Recall hop 3 | Abstention | Citations | Median ms | P95 ms |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| vector | 1.000 | 0.875 | 0.833 | 1.000 | 1.000 | 0.240 | 0.569 |
-| hybrid-graph | 1.000 | 0.875 | 0.833 | 1.000 | 1.000 | 0.372 | 1.012 |
+| vector | 1.000 | 0.875 | 0.833 | 1.000 | 1.000 | 0.233 | 0.554 |
+| hybrid-graph | 1.000 | 0.875 | 0.833 | 1.000 | 1.000 | 0.359 | 1.010 |
 
 Hybrid graph did not improve aggregate multi-hop recall in this run, so the generated report recommends vector retrieval. See the [generated report](benchmarks/report.md) and [raw per-question results](benchmarks/results.json).
 
@@ -92,7 +92,7 @@ Explicitly unsupported:
 
 ## Evaluation
 
-The frozen [question set](evals/questions.jsonl) has four cases at each hop count from zero through three. The same 16 cases run through vector and hybrid-graph retrieval at `top_k=6`; the evaluator preserves 32 raw runs before separate per-mode summaries. It measures required-evidence recall, abstention, whether every citation was selected, and warm retrieval latency. It uses no LLM judge and records model/API cost as zero.
+The frozen [question set](evals/questions.jsonl) has four cases at each hop count from zero through three. The same 16 cases run through vector and hybrid-graph retrieval at `top_k=6`; the evaluator preserves 32 raw runs before separate per-mode summaries. It measures required-evidence recall, abstention, whether every citation was selected, and warm retrieval latency. Citation validity here means citation selection, not semantic entailment of generated prose. The benchmark uses no LLM judge and records model/API cost as zero.
 
 Reproduce it after the quickstart:
 
