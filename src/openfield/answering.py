@@ -12,6 +12,7 @@ QUESTION_WORDS = {
     "a",
     "an",
     "argument",
+    "can",
     "did",
     "do",
     "does",
@@ -22,14 +23,18 @@ QUESTION_WORDS = {
     "this",
     "was",
     "what",
+    "why",
+    "with",
     "which",
 }
+FAILURE_WORDS = {"break", "breaks", "broke", "broken", "fail", "fails", "failed", "failure"}
 SAFETY_PHRASES = ("safe", "guarantee", "all usages", "production impact")
 LIMITATION = "Retrieved evidence indicates relevance but does not prove runtime behavior."
 
 
 def _tokens(text: str) -> set[str]:
-    return {token.casefold() for token in TOKEN_PATTERN.findall(text)}
+    tokens = {token.casefold() for token in TOKEN_PATTERN.findall(text)}
+    return {"fail" if token in FAILURE_WORDS else token for token in tokens}
 
 
 def _deterministic_answer(
@@ -71,9 +76,7 @@ def _deterministic_answer(
         )
     return Answer(
         question=question,
-        claims=tuple(
-            Claim(text=item.text, citation_ids=(item.id,)) for item in supported[:3]
-        ),
+        claims=tuple(Claim(text=item.text, citation_ids=(item.id,)) for item in supported[:3]),
         abstained=False,
         limitations=(LIMITATION,),
         retrieval_mode=retrieval_mode,
@@ -84,8 +87,7 @@ def citations_are_valid(answer: Answer, allowed_ids: set[str]) -> bool:
     if answer.abstained:
         return not answer.claims
     return bool(answer.claims) and all(
-        claim.citation_ids and set(claim.citation_ids) <= allowed_ids
-        for claim in answer.claims
+        claim.citation_ids and set(claim.citation_ids) <= allowed_ids for claim in answer.claims
     )
 
 

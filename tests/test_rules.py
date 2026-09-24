@@ -17,10 +17,13 @@ def test_removed_keyword_applies_only_when_upgrade_crosses_removal() -> None:
     assert "httpx.client.proxies.removed" in rule_ids
 
     for source, target in [("0.27.0", "0.27.2"), ("0.28.0", "0.28.0"), ("0.28.0", "0.27.2")]:
-        assert applicable_rules(
-            pack,
-            Upgrade(package="httpx", from_version=source, to_version=target),
-        ) == []
+        assert (
+            applicable_rules(
+                pack,
+                Upgrade(package="httpx", from_version=source, to_version=target),
+            )
+            == []
+        )
 
 
 def test_pack_rejects_missing_citation_and_review_state() -> None:

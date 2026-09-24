@@ -63,7 +63,7 @@ def build_parser() -> argparse.ArgumentParser:
         choices=[mode.value for mode in RetrievalMode],
         default=RetrievalMode.HYBRID_GRAPH.value,
     )
-    ask.add_argument("--cache-dir", type=Path, default=Path(".cache/openfield"))
+    ask.add_argument("--cache-dir", type=Path, default=Path(".cache/openfield-models"))
     ask.add_argument("--generate", action="store_true")
     ask.add_argument("--model")
     ask.add_argument("--confirm-cloud", action="store_true")
@@ -78,9 +78,7 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
     )
     evaluate.add_argument("--top-k", type=int, default=6)
-    evaluate.add_argument(
-        "--cache-dir", type=Path, default=Path(".cache/openfield-models")
-    )
+    evaluate.add_argument("--cache-dir", type=Path, default=Path(".cache/openfield-models"))
     evaluate.add_argument("--output", type=Path, required=True)
     evaluate.add_argument("--report", type=Path, required=True)
     return parser

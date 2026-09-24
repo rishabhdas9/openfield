@@ -90,6 +90,45 @@ def test_provider_exception_keeps_deterministic_answer() -> None:
     assert "provider unavailable" in answer.limitations
 
 
+def test_deterministic_answer_ignores_incidental_question_words() -> None:
+    evidence = [
+        RetrievedEvidence(
+            id="httpx-0.28.0-empty-params",
+            text="HTTPX 0.28.0 makes params={} replace a query string instead of merging with it.",
+            source_url="https://github.com/encode/httpx/releases/tag/0.28.0",
+            heading="empty params replace query string",
+            package="httpx",
+            version="0.28.0",
+            score=1.0,
+            origins=("hybrid",),
+        ),
+        RetrievedEvidence(
+            id="starlette-0.36.3-testclient-httpx-app",
+            text=(
+                "Starlette 0.36.3 TestClient passed app to httpx.Client, which fails "
+                "when paired with HTTPX 0.28.0 after that argument was removed."
+            ),
+            source_url="https://github.com/Kludex/starlette/discussions/2770",
+            heading="TestClient incompatibility with HTTPX 0.28",
+            package="starlette",
+            version="0.36.3",
+            score=0.9,
+            origins=("hybrid",),
+        ),
+    ]
+
+    answer = answer_from_evidence(
+        "Why can Starlette 0.36.3 break with HTTPX 0.28.0?",
+        evidence,
+        retrieval_mode="hybrid-graph",
+        generate=None,
+    )
+
+    assert [claim.citation_ids for claim in answer.claims] == [
+        ("starlette-0.36.3-testclient-httpx-app",)
+    ]
+
+
 def test_ask_cli_defaults_to_deterministic_output(tmp_path: Path, capsys) -> None:
     database = tmp_path / "evidence.db"
     connection = open_database(database)

@@ -40,9 +40,7 @@ def aggregate(
             continue
         hop = str(case.hop_count)
         counts = recall.setdefault(hop, {"found": 0, "required": 0, "rate": 0.0})
-        counts["found"] += len(
-            set(case.required_evidence_ids) & set(result.retrieved_ids)
-        )
+        counts["found"] += len(set(case.required_evidence_ids) & set(result.retrieved_ids))
         counts["required"] += len(case.required_evidence_ids)
     for counts in recall.values():
         counts["rate"] = _rate(int(counts["found"]), int(counts["required"]))
@@ -129,7 +127,7 @@ def run_benchmark(
             "SELECT id, source_digest FROM chunks ORDER BY id"
         ).fetchall()
         corpus_digest = hashlib.sha256(
-            "\n".join(f'{row["id"]}:{row["source_digest"]}' for row in corpus_rows).encode()
+            "\n".join(f"{row['id']}:{row['source_digest']}" for row in corpus_rows).encode()
         ).hexdigest()
         for mode in modes:
             for case in cases:
@@ -152,9 +150,7 @@ def run_benchmark(
                         mode=mode.value,
                         retrieved_ids=tuple(item.id for item in evidence),
                         citation_ids=tuple(
-                            citation
-                            for claim in answer.claims
-                            for citation in claim.citation_ids
+                            citation for claim in answer.claims for citation in claim.citation_ids
                         ),
                         abstained=answer.abstained,
                         latency_ms=latency_ms,
@@ -170,9 +166,7 @@ def run_benchmark(
         )
         for mode in modes
     }
-    hop_denominators = {
-        str(hop): sum(case.hop_count == hop for case in cases) for hop in range(4)
-    }
+    hop_denominators = {str(hop): sum(case.hop_count == hop for case in cases) for hop in range(4)}
     return {
         "raw_results": [result.model_dump(mode="json") for result in results],
         "summaries_by_mode": summaries,
@@ -180,9 +174,7 @@ def run_benchmark(
             "git_commit": _git_commit(),
             "python": sys.version.split()[0],
             "openfield": __version__,
-            "dependencies": _package_versions(
-                ("fastembed", "numpy", "packaging", "pydantic")
-            ),
+            "dependencies": _package_versions(("fastembed", "numpy", "packaging", "pydantic")),
             "model": MODEL_ID,
             "corpus": {"chunk_count": len(corpus_rows), "digest": corpus_digest},
             "platform": {

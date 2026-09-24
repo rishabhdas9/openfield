@@ -18,7 +18,9 @@ def test_ingestion_is_idempotent_and_every_edge_has_provenance(tmp_path: Path) -
             load_expected_report(),
         )
     assert connection.execute("SELECT count(*) FROM chunks").fetchone()[0] == 14
-    assert connection.execute("SELECT count(*) FROM edges WHERE chunk_id IS NULL").fetchone()[0] == 0
+    assert (
+        connection.execute("SELECT count(*) FROM edges WHERE chunk_id IS NULL").fetchone()[0] == 0
+    )
 
 
 def test_lexical_search_filters_package_and_version(tmp_path: Path) -> None:
@@ -43,7 +45,7 @@ def test_fts_query_text_cannot_change_sql(tmp_path: Path) -> None:
         Path("examples/httpx_028/environment.json"),
         load_expected_report(),
     )
-    assert lexical_search(connection, '\" OR 1=1 --', "httpx", {"0.28.0"}, limit=6) == []
+    assert lexical_search(connection, '" OR 1=1 --', "httpx", {"0.28.0"}, limit=6) == []
     assert connection.execute("SELECT count(*) FROM chunks").fetchone()[0] == 14
 
 

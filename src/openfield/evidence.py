@@ -124,7 +124,10 @@ def _insert_edges(
 ) -> None:
     for relation in relations:
         for endpoint in (relation.source, relation.target):
-            if connection.execute("SELECT 1 FROM entities WHERE id = ?", (endpoint,)).fetchone() is None:
+            if (
+                connection.execute("SELECT 1 FROM entities WHERE id = ?", (endpoint,)).fetchone()
+                is None
+            ):
                 raise ValueError(f"missing edge endpoint: {endpoint}")
         connection.execute(
             "INSERT OR IGNORE INTO edges (source_id, relation, target_id, chunk_id) VALUES (?, ?, ?, ?)",

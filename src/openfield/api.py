@@ -35,7 +35,7 @@ def run_question(database: Path, request: AskRequest) -> Answer:
         if request.retrieval is not RetrievalMode.LEXICAL:
             try:
                 query_vector = fastembed_vectors(
-                    [request.question], Path(".cache/openfield"), local_only=True
+                    [request.question], Path(".cache/openfield-models"), local_only=True
                 )[0]
             except MissingModelError:
                 if request.retrieval is RetrievalMode.VECTOR:

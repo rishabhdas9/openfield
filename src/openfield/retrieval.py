@@ -108,7 +108,9 @@ def vector_search(
         (model_id,),
     ).fetchone()
     if model is None:
-        raise MissingModelError("vector model is not prepared; run evidence embed after model prepare")
+        raise MissingModelError(
+            "vector model is not prepared; run evidence embed after model prepare"
+        )
 
     query = normalize(query_vector)
     if query.size != model["dimensions"]:
@@ -125,8 +127,7 @@ def vector_search(
     if any(row["dimensions"] != query.size for row in rows):
         raise ValueError("stored embedding dimension does not match query dimension")
     scored = [
-        (float(decode_vector(row["values_blob"], row["dimensions"]) @ query), row)
-        for row in rows
+        (float(decode_vector(row["values_blob"], row["dimensions"]) @ query), row) for row in rows
     ]
     scored.sort(key=lambda item: (-item[0], item[1]["id"]))
     return [
@@ -144,9 +145,7 @@ def vector_search(
     ]
 
 
-def fastembed_vectors(
-    texts: list[str], cache_dir: Path, local_only: bool
-) -> list[Sequence[float]]:
+def fastembed_vectors(texts: list[str], cache_dir: Path, local_only: bool) -> list[Sequence[float]]:
     try:
         from fastembed import TextEmbedding
     except ImportError as exc:
@@ -275,7 +274,9 @@ def _fuse(
                 origins = tuple(dict.fromkeys((*existing.origins, *item.origins)))
                 by_id[item.id] = existing.model_copy(update={"origins": origins})
     fused = reciprocal_rank_fusion([[item.id for item in ranking] for ranking in rankings])
-    return [by_id[chunk_id].model_copy(update={"score": score}) for chunk_id, score in fused[:limit]]
+    return [
+        by_id[chunk_id].model_copy(update={"score": score}) for chunk_id, score in fused[:limit]
+    ]
 
 
 def retrieve(

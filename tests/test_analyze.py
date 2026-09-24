@@ -49,13 +49,13 @@ def test_analyze_never_executes_the_target() -> None:
 
 
 def test_comments_strings_and_shadowed_imports_do_not_match() -> None:
-    source = '''
+    source = """
 import httpx
 text = "httpx.Client(proxies={})"
 
 def build(httpx):
     return httpx.Client(proxies={})
-'''
+"""
     from openfield.analyze import analyze_source
     from openfield.models import Upgrade
     from openfield.rules import applicable_rules, load_pack
@@ -75,8 +75,18 @@ def test_syntax_error_is_incomplete_coverage(tmp_path: Path) -> None:
 
     exit_code = main(
         [
-            "analyze", str(broken), "--package", "httpx", "--from", "0.27.2",
-            "--to", "0.28.0", "--root", str(tmp_path), "--output", str(output),
+            "analyze",
+            str(broken),
+            "--package",
+            "httpx",
+            "--from",
+            "0.27.2",
+            "--to",
+            "0.28.0",
+            "--root",
+            str(tmp_path),
+            "--output",
+            str(output),
         ]
     )
     report = json.loads(output.read_text())

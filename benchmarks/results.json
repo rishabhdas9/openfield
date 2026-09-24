@@ -17,7 +17,7 @@
         "httpx-0.28.0-socks5h"
       ],
       "abstained": false,
-      "latency_ms": 0.8495
+      "latency_ms": 0.459667
     },
     {
       "case_id": "single-proxies-deprecated",
@@ -29,7 +29,7 @@
         "httpx-0.26.0-proxies-deprecated"
       ],
       "abstained": false,
-      "latency_ms": 0.327834
+      "latency_ms": 0.168792
     },
     {
       "case_id": "single-app-deprecated",
@@ -41,7 +41,7 @@
         "httpx-0.27.0-app-deprecated"
       ],
       "abstained": false,
-      "latency_ms": 0.285625
+      "latency_ms": 0.146708
     },
     {
       "case_id": "single-starlette-fix",
@@ -53,7 +53,7 @@
         "starlette-0.37.2-testclient-transport"
       ],
       "abstained": false,
-      "latency_ms": 0.288834
+      "latency_ms": 0.148875
     },
     {
       "case_id": "two-direct-usage",
@@ -71,7 +71,7 @@
         "httpx-0.28.0-compact-json"
       ],
       "abstained": false,
-      "latency_ms": 0.486791
+      "latency_ms": 0.251834
     },
     {
       "case_id": "two-proxy-migration",
@@ -90,7 +90,7 @@
         "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3"
       ],
       "abstained": false,
-      "latency_ms": 0.44175
+      "latency_ms": 0.22725
     },
     {
       "case_id": "two-starlette-app",
@@ -108,7 +108,7 @@
         "httpx-0.28.0-client-arguments-removed"
       ],
       "abstained": false,
-      "latency_ms": 0.77275
+      "latency_ms": 0.396125
     },
     {
       "case_id": "two-compatible-starlette",
@@ -126,7 +126,7 @@
         "httpx-0.28.0-client-arguments-removed"
       ],
       "abstained": false,
-      "latency_ms": 0.673
+      "latency_ms": 0.347458
     },
     {
       "case_id": "three-transitive-break",
@@ -144,7 +144,7 @@
         "httpx-0.28.0-client-arguments-removed"
       ],
       "abstained": false,
-      "latency_ms": 0.605708
+      "latency_ms": 0.313833
     },
     {
       "case_id": "three-remediation-options",
@@ -158,11 +158,10 @@
         "httpx-0.28.0-verify-string-deprecated"
       ],
       "citation_ids": [
-        "starlette-0.36.3-testclient-httpx-app",
         "httpx-0.28.0-verify-string-deprecated"
       ],
       "abstained": false,
-      "latency_ms": 1.096833
+      "latency_ms": 0.568542
     },
     {
       "case_id": "three-direct-and-transitive",
@@ -177,7 +176,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.549833
+      "latency_ms": 0.279875
     },
     {
       "case_id": "three-provenance",
@@ -196,7 +195,7 @@
         "finding:httpx.client.proxies.removed:examples/httpx_028/direct_client.py:3"
       ],
       "abstained": false,
-      "latency_ms": 0.879459
+      "latency_ms": 0.453125
     },
     {
       "case_id": "abstain-safe",
@@ -211,7 +210,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.32225
+      "latency_ms": 0.16475
     },
     {
       "case_id": "abstain-installed-version",
@@ -226,7 +225,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.419208
+      "latency_ms": 0.218042
     },
     {
       "case_id": "abstain-timeout",
@@ -241,7 +240,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.38275
+      "latency_ms": 0.198125
     },
     {
       "case_id": "abstain-production-incidents",
@@ -256,7 +255,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.204959
+      "latency_ms": 0.108583
     },
     {
       "case_id": "single-removed-proxies",
@@ -275,7 +274,7 @@
         "httpx-0.28.0-socks5h"
       ],
       "abstained": false,
-      "latency_ms": 1.928
+      "latency_ms": 1.011917
     },
     {
       "case_id": "single-proxies-deprecated",
@@ -287,7 +286,7 @@
         "httpx-0.26.0-proxies-deprecated"
       ],
       "abstained": false,
-      "latency_ms": 0.472
+      "latency_ms": 0.24225
     },
     {
       "case_id": "single-app-deprecated",
@@ -299,7 +298,7 @@
         "httpx-0.27.0-app-deprecated"
       ],
       "abstained": false,
-      "latency_ms": 0.43925
+      "latency_ms": 0.22575
     },
     {
       "case_id": "single-starlette-fix",
@@ -311,7 +310,7 @@
         "starlette-0.37.2-testclient-transport"
       ],
       "abstained": false,
-      "latency_ms": 0.449292
+      "latency_ms": 0.233542
     },
     {
       "case_id": "two-direct-usage",
@@ -329,7 +328,7 @@
         "httpx-0.28.0-compact-json"
       ],
       "abstained": false,
-      "latency_ms": 0.864834
+      "latency_ms": 0.440375
     },
     {
       "case_id": "two-proxy-migration",
@@ -348,7 +347,7 @@
         "httpx-0.26.0-proxies-deprecated"
       ],
       "abstained": false,
-      "latency_ms": 0.599917
+      "latency_ms": 0.30275
     },
     {
       "case_id": "two-starlette-app",
@@ -366,7 +365,7 @@
         "httpx-0.28.0-client-arguments-removed"
       ],
       "abstained": false,
-      "latency_ms": 1.159958
+      "latency_ms": 0.596083
     },
     {
       "case_id": "two-compatible-starlette",
@@ -384,7 +383,7 @@
         "httpx-0.28.0-client-arguments-removed"
       ],
       "abstained": false,
-      "latency_ms": 0.873583
+      "latency_ms": 0.450167
     },
     {
       "case_id": "three-transitive-break",
@@ -402,7 +401,7 @@
         "starlette-0.36.3-testclient-httpx-app"
       ],
       "abstained": false,
-      "latency_ms": 0.805833
+      "latency_ms": 0.420125
     },
     {
       "case_id": "three-remediation-options",
@@ -416,12 +415,10 @@
         "httpx-0.28.0-socks5h"
       ],
       "citation_ids": [
-        "starlette-0.36.3-testclient-httpx-app",
-        "httpx-0.28.0-verify-string-deprecated",
-        "httpx-0.28.0-empty-params"
+        "httpx-0.28.0-verify-string-deprecated"
       ],
       "abstained": false,
-      "latency_ms": 1.682584
+      "latency_ms": 0.88
     },
     {
       "case_id": "three-direct-and-transitive",
@@ -436,7 +433,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.696208
+      "latency_ms": 0.358125
     },
     {
       "case_id": "three-provenance",
@@ -455,7 +452,7 @@
         "starlette-0.37.2-testclient-transport"
       ],
       "abstained": false,
-      "latency_ms": 1.060875
+      "latency_ms": 0.555375
     },
     {
       "case_id": "abstain-safe",
@@ -470,7 +467,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.481042
+      "latency_ms": 0.25975
     },
     {
       "case_id": "abstain-installed-version",
@@ -485,7 +482,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.614375
+      "latency_ms": 0.314
     },
     {
       "case_id": "abstain-timeout",
@@ -500,7 +497,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.715083
+      "latency_ms": 0.386709
     },
     {
       "case_id": "abstain-production-incidents",
@@ -515,7 +512,7 @@
       ],
       "citation_ids": [],
       "abstained": true,
-      "latency_ms": 0.354959
+      "latency_ms": 0.193625
     }
   ],
   "summaries_by_mode": {
@@ -553,8 +550,8 @@
         "rate": 1.0
       },
       "latency_ms": {
-        "median": 0.4642705,
-        "p95": 1.096833
+        "median": 0.239542,
+        "p95": 0.568542
       }
     },
     "hybrid-graph": {
@@ -591,13 +588,13 @@
         "rate": 1.0
       },
       "latency_ms": {
-        "median": 0.7056455,
-        "p95": 1.928
+        "median": 0.372417,
+        "p95": 1.011917
       }
     }
   },
   "metadata": {
-    "git_commit": "e70617ecf1444a7ce57c9888dacd72449abe36de",
+    "git_commit": "92be32d30dc99168c448fdd308beaac3b1c588d1",
     "python": "3.13.15",
     "openfield": "0.1.0",
     "dependencies": {
@@ -629,7 +626,7 @@
       "2": 4,
       "3": 4
     },
-    "model_preparation_ms": 433.716083,
+    "model_preparation_ms": 240.317959,
     "model_api_cost_usd": 0
   }
 }
